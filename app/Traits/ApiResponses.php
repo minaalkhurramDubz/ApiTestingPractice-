@@ -11,7 +11,18 @@ trait ApiResponses{
 
     }
 
+    // successful case responses 
+
     protected function success($message, $statusCode=200){
+        return response()->json([
+            'message'=> $message,
+            'status'=> $statusCode
+        ], $statusCode);
+    }
+
+
+    //failure case responses 
+    protected function error($message, $statusCode){
         return response()->json([
             'message'=> $message,
             'status'=> $statusCode
