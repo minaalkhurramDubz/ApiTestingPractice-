@@ -17,7 +17,7 @@ class ApiV1TicketController extends Controller
     {
         //returns all the records  from the tickets table as json response 
 
-        return TicketResource::collection(Ticket::all()); 
+        return TicketResource::collection(Ticket::paginate()); 
         // use the ticket resource to transalte the payload 
     }
 
@@ -42,7 +42,8 @@ class ApiV1TicketController extends Controller
      */
     public function show(Ticket $ticket)
     {
-        //
+        // returns a single ticket , resource transalates the ticket into json sturcture 
+        return new TicketResource($ticket);
     }
 
     /**
