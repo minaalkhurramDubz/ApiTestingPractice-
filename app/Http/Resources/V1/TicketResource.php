@@ -28,7 +28,11 @@ class TicketResource extends JsonResource
             'type'=>'ticket',
             'id'=>$this->id,
             'attributes'=>[
-            'attributes'=> $this->description,
+                'title'=>$this->title,
+// the when function will only display the description if the route is for tickets.show ( wont shows description for tickets list but will show it when single ticket req is sent )
+            'description'=> $this->when( 
+                $request->routeIs('tickets.show'),
+            $this->description ),
             'status'=> $this->status,
              'createdAt'=> $this->created_at,
              'updatedAt'=> $this->updated_at],
@@ -42,6 +46,12 @@ class TicketResource extends JsonResource
     'data'=>[
         'type'=>'user',
         'id'=>$this->user_id
+    ],
+
+    'includes'=>[
+        new UserResource($this->user)
+        
+
     ],
     'links'=>[
         ['self'=>'todo']
