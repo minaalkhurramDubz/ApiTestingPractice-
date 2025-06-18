@@ -8,17 +8,31 @@ use App\Http\Requests\Api\V1\UpdateTicketRequest;
 use App\Http\Resources\V1\TicketResource;
 use App\Models\Ticket;
 
-class ApiV1TicketController extends Controller
+
+// inherit the api controller instead of general controller because it has the include method 
+class ApiV1TicketController extends ApiController
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
+
+
+        if($this->include('author'))
+        {
+            return  TicketResource::collection(Ticket::with('user')->paginate());
+
+        }
+        
+        
         //returns all the records  from the tickets table as json response 
 
         return TicketResource::collection(Ticket::paginate()); 
         // use the ticket resource to transalte the payload 
+
+        
+
     }
 
     /**
@@ -42,6 +56,15 @@ class ApiV1TicketController extends Controller
      */
     public function show(Ticket $ticket)
     {
+
+
+        if($this->include('author'))
+        {
+            return  new TicketResource($ticket->load('user'));
+
+        }
+           
+
         // returns a single ticket , resource transalates the ticket into json sturcture 
         return new TicketResource($ticket);
     }

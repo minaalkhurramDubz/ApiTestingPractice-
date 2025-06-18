@@ -8,17 +8,20 @@ use App\Http\Requests\Api\V1\UpdateUserRequest;
 use App\Http\Resources\V1\UserResource;
 use App\Models\User;
 
-class UsersController extends Controller
+class UsersController extends ApiController
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        //
-      return UserResource::collection(User::paginate());
-
+   public function index()
+{
+    if ($this->include('tickets')) {
+        return UserResource::collection(User::with('tickets')->paginate());
     }
+
+    return UserResource::collection(User::paginate());
+}
+
 
     /**
      * Show the form for creating a new resource.
@@ -36,12 +39,19 @@ class UsersController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(User $user)
-    {
-        //
-
-        return new UserResource($user);
+   public function show(User $user)
+{
+    if ($this->include('tickets')) {
+        $user->load('tickets');
     }
+//dd($user->tickets);
+
+    return new UserResource($user);
+
+
+
+}
+
 
     /**
      * Show the form for editing the specified resource.

@@ -38,7 +38,7 @@ class TicketResource extends JsonResource
              'updatedAt'=> $this->updated_at],
 
              'links'=>[
-                ['self'=>route('tickets.show',['ticket'=>$this->id])]
+                'self'=>route('users.show',['user'=>$this->user_id])
              ],
 
              'relationships'=>[
@@ -48,13 +48,15 @@ class TicketResource extends JsonResource
         'id'=>$this->user_id
     ],
 
-    'includes'=>[
-        new UserResource($this->user)
-        
-
-    ],
+    // shows the user associated with a ticket?? 
+    // we can made this optional by adding a query params . for instance /tickets/include=author
+    // to implement make changes in ticket controller 
+    
+       'includes' => $this->whenLoaded('author', new UserResource($this->user))
+ // will be ommited if the resource is not included 
+ ,
     'links'=>[
-        ['self'=>'todo']
+        'self'=>route('tickets.show',['ticket'=>$this->id])
 
     ]
 ]
