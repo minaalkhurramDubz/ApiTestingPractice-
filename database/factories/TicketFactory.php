@@ -18,6 +18,9 @@ class TicketFactory extends Factory
     public function definition(): array
     {
         return [
+
+
+            //the user factory creates the user , table was created through migrate 
         'user_id'=> User::factory(),
         'title'=>fake()->words(3, true),
         'description'=>fake()->paragraph(),

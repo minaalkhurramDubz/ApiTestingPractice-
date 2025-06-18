@@ -15,9 +15,18 @@ Route::resource('tickets',TicketController::class)
 {};*/
 
 // instead we will use apiResource becuase it will provide routes only for the things we need 
-Route::apiResource('tickets', ApiV1TicketController::class);    
+//Route::apiResource('tickets', ApiV1TicketController::class);    
 
 
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
+
+
+// this makes sure that to access our ticket resources , the request has to include a sanctum token 
+//this prottects our route / api 
+Route::middleware('auth:sanctum')->apiResource('tickets', ApiV1TicketController::class);
+
+
+//in postman add bearer token
+// take token returned from the login request and add that in auth -> bearer token , then the api request will be authnoried 

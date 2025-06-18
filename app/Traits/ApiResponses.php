@@ -5,16 +5,19 @@ namespace App\Traits;
 
 trait ApiResponses{
 
-    protected function ok($message){
+    protected function ok($message,$data){
          
-        return $this->success($message,200);
+        return $this->success($message,$data,200);
 
     }
 
     // successful case responses 
 
-    protected function success($message, $statusCode=200){
+    protected function success($message, $data, $statusCode=200){
         return response()->json([
+
+            // success was changed , data is added for token producing 
+            'data'=>$data,
             'message'=> $message,
             'status'=> $statusCode
         ], $statusCode);
