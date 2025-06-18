@@ -26,3 +26,9 @@ Route::get('/tickets',function()
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
+
+
+
+// makes sure that the user calling logut , is a user thats currently authorized/logged in 
+
+Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);

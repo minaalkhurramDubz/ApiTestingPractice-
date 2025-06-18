@@ -11,43 +11,22 @@ use App\Models\User;
 
 use App\Http\Controllers\Controller;
 
-class AuthController extends Controller
-{
+class AuthController extends Controller{
     use ApiResponses;
 
     //public function login ( RequestName $reqParams)
-    public function login(LoginUserRequest  $request)
-    {
-
-      //validate data from request 
-
-           $request->validated($request->all());
-
-        // if the returned data is valid then we will authenticate it 
-
-
-        //auth fail casse 
-        if(!Auth::attempt($request->only('email','password')))
-        {
-          return $this->error('invalid credentials ',401);
-
-        }
-
-
-        //auth pass case 
-
-        // fetch the user from the database 
-        $user=User::firstWhere('email', $request->email);
-
-        //include the token here 33
-        return $this->ok('Authenticated ',
-        //this is where the token is created , if there was gui the tokenname would be set by the user 
-        ['token'=>$user->createToken('Api token for '. $user->email)->plainTextToken ]
-
-        //the users email is concantenated with the  api token for message and a has value is created fo the token 
-      );
-
+  public function login(LoginUserRequest $request)
+{
+    if (!Auth::attempt($request->only('email', 'password'))) {
+        return $this->error('Invalid credentials', 401);
     }
+
+    $user = User::firstWhere('email', $request->email);
+
+    return $this->ok('Authenticated', [
+        'token' => $user->createToken('API token for ' . $user->email)->plainTextToken
+    ]);
+}
 
 
     public function register()
@@ -60,7 +39,7 @@ class AuthController extends Controller
     public function logout(Request $request)  
     {
 
-      $request->user()->cureentAccessToken()->delete();
+      $request->user()->currentAccessToken()->delete();
 
       return $this->ok( '');
 
