@@ -52,7 +52,7 @@ class TicketResource extends JsonResource
     // we can made this optional by adding a query params . for instance /tickets/include=author
     // to implement make changes in ticket controller 
     
-       'includes' => $this->whenLoaded('author', new UserResource($this->user))
+       'includes' => $this->whenLoaded('author')
  // will be ommited if the resource is not included 
  ,
     'links'=>[
