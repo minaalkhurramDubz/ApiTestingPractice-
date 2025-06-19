@@ -3,7 +3,7 @@
 
 namespace App\Http\Filters\V1;
 
-class TicketFilter extends QueryFilter{
+class AuthorFilter extends QueryFilter{
 
     public function include($value)
     {
@@ -12,11 +12,11 @@ class TicketFilter extends QueryFilter{
 
     }
 
-    public function status($value){
+    public function id($value){
 
 // explode akes substring , first param is the sperator value so , A,B,C will be seperated by A B and c 
 
-        return $this->builder->whereIn('status', explode(',', $value));
+        return $this->builder->whereIn('id', explode(',', $value));
 
     }//fix builder
 
@@ -46,10 +46,17 @@ return $this->builder->whereBetween('updated_at', $value);
     }
 
 
-    public function title($value)
+    public function email($value)
     {
         $likestr=str_replace('*','%',$value);
-        return $this ->builder->where('title','like',$likestr);
+        return $this ->builder->where('email','like',$likestr);
+    }
+
+
+    public function name($value)
+    {
+        $likestr=str_replace('*','%',$value);
+        return $this ->builder->where('name','like',$likestr);
     }
 
 }

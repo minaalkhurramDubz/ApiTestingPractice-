@@ -1,8 +1,9 @@
 <?php
 
 use App\Http\Controllers\Api\V1\ApiV1TicketController;
-use App\Http\Controllers\Api\V1\UsersController;
+use App\Http\Controllers\Api\V1\AuthorsController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Api\V1\AuthorTicketController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Models\Ticket;
@@ -30,6 +31,11 @@ Route::middleware('auth:sanctum')->apiResource('tickets', ApiV1TicketController:
 
 //in postman add bearer token
 // take token returned from the login request and add that in auth -> bearer token , then the api request will be authnoried 
+//Route::middleware('auth:sanctum')->apiResource('users', UsersController::class);
 
 
-Route::middleware('auth:sanctum')->apiResource('users', UsersController::class);
+// a type of users, users tickets will be filtered through this 
+
+Route::middleware('auth:sanctum')->apiResource('authors', AuthorsController::class);
+
+Route::middleware('auth:sanctum')->apiResource('authors.tickets', AuthorTicketController::class);

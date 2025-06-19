@@ -61,4 +61,9 @@ abstract class QueryFilter{
     }
 
 
+    protected function sort($value)
+    {
+        
+    }
+
 }
