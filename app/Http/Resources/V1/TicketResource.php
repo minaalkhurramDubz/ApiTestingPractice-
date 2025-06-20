@@ -13,17 +13,14 @@ class TicketResource extends JsonResource
      * @return array<string, mixed>
      */
 
-
-
     //  public static $wrap='ticket';
-
 
     public function toArray(Request $request): array
     {
 
-        // design payload here 
+        // design payload here
 
-        // only this information will be displayed in the response paylod 
+        // only this information will be displayed in the response paylod
         return [
             'type' => 'ticket',
             'id' => $this->id,
@@ -36,36 +33,34 @@ class TicketResource extends JsonResource
                 ),
                 'status' => $this->status,
                 'createdAt' => $this->created_at,
-                'updatedAt' => $this->updated_at
+                'updatedAt' => $this->updated_at,
             ],
 
-         'links' => [
-    'self' => route('authors.show', ['author' => $this->user_id]) // fixed here
-],
-
+            'links' => [
+                'self' => route('authors.show', ['author' => $this->user_id]), // fixed here
+            ],
 
             'relationships' => [
                 'author' => [
                     'data' => [
                         'type' => 'user',
-                        'id' => $this->user_id
+                        'id' => $this->user_id,
                     ],
 
-                    // shows the user associated with a ticket?? 
+                    // shows the user associated with a ticket??
                     // we can made this optional by adding a query params . for instance /tickets/include=author
-                    // to implement make changes in ticket controller 
+                    // to implement make changes in ticket controller
 
                     'includes' => $this->whenLoaded('author')
-                    // will be ommited if the resource is not included 
+                    // will be ommited if the resource is not included
                     ,
                     'links' => [
-                        'self' => route('tickets.show', ['ticket' => $this->id])
+                        'self' => route('tickets.show', ['ticket' => $this->id]),
 
-                    ]
-                ]
-            ]
+                    ],
+                ],
+            ],
         ];
-
 
     }
 }

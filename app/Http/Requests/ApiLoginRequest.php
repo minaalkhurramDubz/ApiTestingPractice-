@@ -11,7 +11,7 @@ class ApiLoginRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        //user will login in if auth is true 
+        // user will login in if auth is true
         return true;
     }
 
@@ -23,9 +23,9 @@ class ApiLoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //params for logging in 
-           'email'=> 'required',
-           'password'=> 'required',
+            // params for logging in
+            'email' => 'required',
+            'password' => 'required',
         ];
     }
 }
