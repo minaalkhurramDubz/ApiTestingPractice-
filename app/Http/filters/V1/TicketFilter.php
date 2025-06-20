@@ -15,7 +15,7 @@ class TicketFilter extends QueryFilter
     {
         // eagles out relations , pre fetches
         return $this->builder->with($value);
-
+ 
     }
 
     public function status($value)

@@ -3,13 +3,19 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Traits\ApiResponses;
 
 class ApiController extends Controller
 {
     //
 
+    use ApiResponses;
+
+    
+
     public function include(string $relationship): bool
     {
+
 
         // get the query param , from url
         $param = request()->get('include');
