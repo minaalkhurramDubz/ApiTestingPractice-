@@ -90,16 +90,25 @@ class ApiV1TicketController extends ApiController
     /**
      * Display the specified resource.
      */
-    public function show(Ticket $ticket)
+    public function show($ticket_id)
     {
+        // the try catch here , handles requests for tickets that have been deleted / not exists
+        try {
 
-        if ($this->include('author')) {
-            return new TicketResource($ticket->load('user'));
+            $ticket = Ticket::findOrFail($ticket_id);
+            if ($this->include('author')) {
+                return new TicketResource($ticket->load('user'));
+
+            }
+
+            // returns a single ticket , resource transalates the ticket into json sturcture
+            return new TicketResource($ticket);
+        } catch (ModelNotFoundException $exception) {
+
+            return $this->error('Ticket not found ', 404);
 
         }
 
-        // returns a single ticket , resource transalates the ticket into json sturcture
-        return new TicketResource($ticket);
     }
 
     /**
@@ -123,8 +132,22 @@ class ApiV1TicketController extends ApiController
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Ticket $ticket)
+    public function destroy($ticket_id)
     {
-        //
+        // for deleting requests
+
+        // find the resource to be deleted ( check if it exists basicaslly )
+
+        try {
+            $ticket = Ticket::findOrFail($ticket_id);
+            $ticket->delete();
+
+            return $this->ok('Ticket successfully deleted ');
+
+        } catch (ModelNotFoundException $exception) {
+
+            return $this->error('Ticket not found ', 404);
+
+        }
     }
 }
