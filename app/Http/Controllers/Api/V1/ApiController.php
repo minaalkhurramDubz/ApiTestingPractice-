@@ -11,11 +11,8 @@ class ApiController extends Controller
 
     use ApiResponses;
 
-    
-
     public function include(string $relationship): bool
     {
-
 
         // get the query param , from url
         $param = request()->get('include');
