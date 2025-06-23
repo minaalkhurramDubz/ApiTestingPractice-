@@ -10,12 +10,15 @@ use App\Http\Resources\V1\TicketResource;
 use App\Models\Ticket;
 use App\Models\User;
 use App\Traits\ApiResponses;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 // inherit the api controller instead of general controller because it has the include method
 class ApiV1TicketController extends ApiController
 {
     use ApiResponses;
+
+    protected $policyClass = TicketPolicy::class;
 
     /**
      * Display a listing of the resource.
@@ -132,8 +135,9 @@ class ApiV1TicketController extends ApiController
         try {
             $ticket = Ticket::findOrFail($ticket_id);
 
-            // if the ticket exists , update the model
+            $this->isAble('update', $ticket);
 
+            // if the ticket exists , update the model
             $ticket->update($request->mappedAttributes());
 
             return new TicketResource($ticket);
@@ -142,8 +146,10 @@ class ApiV1TicketController extends ApiController
 
             return $this->error('Ticket not found ', 404);
 
-        }
+        } catch (AuthorizationException $exception) {
+            return $this->error('You Are Not Authorized ', 401);
 
+        }
     }
 
     public function replace(ReplaceTicketRequest $request, $ticket_id)

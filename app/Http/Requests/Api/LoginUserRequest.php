@@ -11,7 +11,7 @@ class LoginUserRequest extends FormRequest
      */
     public function authorize(): bool
     {
-     // if return is false users wont be able to sing in at all 
+        // if return is false users wont be able to sing in at all
 
         return true;
     }
@@ -25,10 +25,8 @@ class LoginUserRequest extends FormRequest
     {
         return [
             //
-              'email'=>['required','string','email'],
-               'password'=>['required','string','min:8'],
-
-
+            'email' => ['required', 'string', 'email'],
+            'password' => ['required', 'string', 'min:8'],
 
         ];
     }
