@@ -2,11 +2,9 @@
 
 namespace App\Http\Requests\Api\V1;
 
-use Illuminate\Foundation\Http\FormRequest;
-
 // this class to handle incoming POST requests (like creating a ticket) — in a clean, organized way. Instead of writing validation rules inside your controlle
 
-class StoreTicketRequest extends FormRequest
+class StoreTicketRequest extends BaseTicketRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -46,10 +44,4 @@ class StoreTicketRequest extends FormRequest
 
     // this function displays messages, like if user enters invalid data and displays message
 
-    public function messages()
-    {
-        return [
-            'data.attributes.status' => ' The data.attributes.status value is invalid, please user : A , C , H , X ',
-        ];
-    }
 }

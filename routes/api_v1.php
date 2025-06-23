@@ -26,17 +26,16 @@ Route::middleware('auth:sanctum')->group(function () {
     // this prottects our route / api
     Route::apiResource('tickets', ApiV1TicketController::class)->except(['update']);
     Route::put('tickets/{tickets}', [ApiV1TicketController::class, 'replace']);
-    // in postman add bearer token
+    Route::patch('tickets/{tickets}', [ApiV1TicketController::class, 'update']);
     // take token returned from the login request and add that in auth -> bearer token , then the api request will be authnoried
     // Route::middleware('auth:sanctum')->apiResource('users', UsersController::class);
 
     // a type of users, users tickets will be filtered through this
 
     Route::apiResource('authors', AuthorsController::class);
-
     Route::apiResource('authors.tickets', AuthorTicketController::class)->except(['update']);
-
     Route::put('authors/{author}/tickets/{ticket}', [ApiV1TicketController::class, 'replace']);
+    Route::patch('authors/{author}/tickets/{ticket}', [ApiV1TicketController::class, 'update']);
 
     Route::get('/user', function (Request $request) {
         return $request->user();

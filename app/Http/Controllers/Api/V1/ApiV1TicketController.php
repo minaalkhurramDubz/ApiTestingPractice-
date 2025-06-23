@@ -127,12 +127,29 @@ class ApiV1TicketController extends ApiController
      */
     public function update(UpdateTicketRequest $request, $ticket_id)
     {
-        // Patch , put
+        // Patch
+
+        try {
+            $ticket = Ticket::findOrFail($ticket_id);
+
+            // if the ticket exists , update the model
+
+            $ticket->update($request->mappedAttributes());
+
+            return new TicketResource($ticket);
+
+        } catch (ModelNotFoundException $exception) {
+
+            return $this->error('Ticket not found ', 404);
+
+        }
+
     }
 
     public function replace(ReplaceTicketRequest $request, $ticket_id)
     {
 
+        // put
         // this stores the data for the post request
 
         // check if user exists
