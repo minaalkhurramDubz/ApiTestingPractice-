@@ -17,20 +17,29 @@ Route::resource('tickets',TicketController::class)
 // instead we will use apiResource becuase it will provide routes only for the things we need
 // Route::apiResource('tickets', ApiV1TicketController::class);
 
-Route::get('/user', function (Request $request) {
+/*Route::get('/user', function (Request $request) {
     return $request->user();
-})->middleware('auth:sanctum');
+})->middleware('auth:sanctum');*/
 
-// this makes sure that to access our ticket resources , the request has to include a sanctum token
-// this prottects our route / api
-Route::middleware('auth:sanctum')->apiResource('tickets', ApiV1TicketController::class);
+Route::middleware('auth:sanctum')->group(function () {
+    // this makes sure that to access our ticket resources , the request has to include a sanctum token// this handles all routes related to the tickets , except the update route
+    // this prottects our route / api
+    Route::apiResource('tickets', ApiV1TicketController::class)->except(['update']);
+    Route::put('tickets/{tickets}', [ApiV1TicketController::class, 'replace']);
+    // in postman add bearer token
+    // take token returned from the login request and add that in auth -> bearer token , then the api request will be authnoried
+    // Route::middleware('auth:sanctum')->apiResource('users', UsersController::class);
 
-// in postman add bearer token
-// take token returned from the login request and add that in auth -> bearer token , then the api request will be authnoried
-// Route::middleware('auth:sanctum')->apiResource('users', UsersController::class);
+    // a type of users, users tickets will be filtered through this
 
-// a type of users, users tickets will be filtered through this
+    Route::apiResource('authors', AuthorsController::class);
 
-Route::middleware('auth:sanctum')->apiResource('authors', AuthorsController::class);
+    Route::apiResource('authors.tickets', AuthorTicketController::class)->except(['update']);
 
-Route::middleware('auth:sanctum')->apiResource('authors.tickets', AuthorTicketController::class);
+    Route::put('authors/{author}/tickets/{ticket}', [ApiV1TicketController::class, 'replace']);
+
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
+
+});

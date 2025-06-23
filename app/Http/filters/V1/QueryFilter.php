@@ -51,7 +51,8 @@ abstract class QueryFilter
 
         return $builder;
     }
-// function for the sort query 
+
+    // function for the sort query
     protected function sort($value)
     {
         $sortAttirbutes = explode(',', $value);

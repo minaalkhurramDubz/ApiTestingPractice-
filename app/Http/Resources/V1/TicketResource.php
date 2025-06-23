@@ -28,7 +28,7 @@ class TicketResource extends JsonResource
                 'title' => $this->title,
                 // the when function will only display the description if the route is for tickets.show ( wont shows description for tickets list but will show it when single ticket req is sent )
                 'description' => $this->when(
-                    $request->routeIs('tickets.show'),
+                    ! $request->routeIs(['tickets.index', 'authors.tickets.index']),
                     $this->description
                 ),
                 'status' => $this->status,
