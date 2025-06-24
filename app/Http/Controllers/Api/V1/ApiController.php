@@ -13,6 +13,8 @@ class ApiController extends Controller
     //
     use AuthorizesRequests;
 
+    protected $policyClass;
+
     public function include(string $relationship): bool
     {
 
@@ -38,6 +40,7 @@ class ApiController extends Controller
     // wraps authorize() and forces the use of a specific policy class
     public function isAble($ability, $targetModel)
     {
+        //    dd($ability, $targetModel);
 
         return $this->authorize($ability, [$targetModel, $this->policyClass]);
 

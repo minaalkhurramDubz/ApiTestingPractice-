@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 
 // this class to handle incoming POST requests (like creating a ticket) — in a clean, organized way. Instead of writing validation rules inside your controlle
 
-class BaseTicketRequest extends FormRequest
+class BaseUserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -20,25 +20,16 @@ class BaseTicketRequest extends FormRequest
 
     // this function displays messages, like if user enters invalid data and displays message
 
-    public function messages()
-    {
-        return [
-            'data.attributes.status' => ' The data.attributes.status value is invalid, please user : A , C , H , X ',
-        ];
-    }
-
     public function mappedAttributes(array $otherAttributes = [])
     {
         // thos function is for the patch method to build an array depending on the required changes
 
         // keys are the data attributes
         $attributeMap = array_merge([
-            'data.attributes.title' => 'title',
-            'data.attributes.description' => 'description',
-            'data.attributes.status' => 'status',
-            'data.attributes.createdAt' => 'created_at',
-            'data.attributes.updatedAt' => 'updated_at',
-            'data.relationships.author.data.id' => 'user_id',
+            'data.attributes.name' => 'name',
+            'data.attributes.email' => 'email',
+            'data.attributes.isManager' => 'is_manager',
+            'data.attributes.password' => 'password',
         ], $otherAttributes);
 
         $attributesToUpdate = [];
@@ -47,6 +38,13 @@ class BaseTicketRequest extends FormRequest
         foreach ($attributeMap as $key => $attribute) {
 
             if ($this->has($key)) {
+                // get input value of password key to compare
+
+                $value = $this->input($key);
+                if ($attribute === 'password') {
+                    $value = bcrypt($value);
+
+                }
                 $attributesToUpdate[$attribute] = $this->input($key);
 
             }

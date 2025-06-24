@@ -20,6 +20,7 @@ class UserResource extends JsonResource
             'attributes' => [
                 'name' => $this->name,
                 'email' => $this->email,
+                'isManager' => $this->is_manager,
 
                 $this->mergeWhen(
                     $request->routeIs('authors.*'),
@@ -36,7 +37,7 @@ class UserResource extends JsonResource
 
             'links' => [
                 'self' => route('authors.show', ['author' => $this->id]),
-        ],
+            ],
 
         ];
     }

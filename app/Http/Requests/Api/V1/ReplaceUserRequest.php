@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\Api\V1;
 
-class StoreUserRequest extends BaseUserRequest
+// this class to handle incoming POST requests (like creating a ticket) — in a clean, organized way. Instead of writing validation rules inside your controlle
+
+class ReplaceUserRequest extends BaseUserRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -19,6 +21,7 @@ class StoreUserRequest extends BaseUserRequest
      */
     public function rules(): array
     {
+    
 
         // defines the format/ the required field client should send in a post request
         // base rule needed for all routes
@@ -30,5 +33,14 @@ class StoreUserRequest extends BaseUserRequest
         ];
 
         return $rules;
+    }
+
+    // this function displays messages, like if user enters invalid data and displays message
+
+    public function messages()
+    {
+        return [
+            'data.attributes.status' => ' The data.attributes.status value is invalid, please user : A , C , H , X ',
+        ];
     }
 }

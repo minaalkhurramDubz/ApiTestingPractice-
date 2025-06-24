@@ -5,7 +5,8 @@ namespace App\Providers;
 // use Illuminate\Support\Facades\Gate;
 
 use App\Models\Ticket;
-use App\Policies\V1\TicketPolicy;
+use App\Models\User;
+use Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
@@ -18,7 +19,8 @@ class AuthServiceProvider extends ServiceProvider
     protected $policies = [
 
         // mapping policy to the db classs
-        Ticket::class => TicketPolicy::class,
+        Ticket::class => \App\Policies\TicketPolicy::class,
+        User::class => \App\Policies\UserPolicy::class,
 
     ];
 
@@ -28,5 +30,8 @@ class AuthServiceProvider extends ServiceProvider
     public function boot(): void
     {
         //
+        Gate::policy(Ticket::class, \App\Policies\TicketPolicy::class);
+        Gate::policy(User::class, \App\Policies\UserPolicy::class);
+
     }
 }
