@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\Api\V1;
 
-// this class to handle incoming POST requests (like creating a ticket) — in a clean, organized way. Instead of writing validation rules inside your controlle
+use App\Permissions\Abilities;
 
 class StoreTicketRequest extends BaseTicketRequest
 {
@@ -21,27 +21,22 @@ class StoreTicketRequest extends BaseTicketRequest
      */
     public function rules(): array
     {
-
-        // defines the format/ the required field client should send in a post request
-        // base rule needed for all routes
         $rules = [
-            'data.attributes.title' => ['required', 'string'],
-            'data.attributes.description' => ['required', 'string'],
-            'data.attributes.status' => ['required', 'string', 'in:A,C,H,X'],
-
-            // author id only needs to be seperated for the tickets route not the user routes
-            // 'data.relationships.author.data.id' => ['required', 'integer'],
+            'data.attributes.title' => 'required|string',
+            'data.attributes.description' => 'required|string',
+            'data.attributes.status' => 'required|string|in:A,C,H,X',
+            'data.relationships.author.data.id' => 'required|integer|exists:users,id',
         ];
 
-        // if the route is for tickets post request then data id rules is added
-        if ($this->routeIs('tickets.store')) {
-            $rules['data.relationships.author.data.id'] = 'required|integer';
+        $user = $this->user();
 
+        // if the user has the ability to create a ticket , then the session id should match the author id
+        if ($this->routeIs('tickets.store')) {
+            if ($user->tokenCan(Abilities::CreateOwnTicket)) {
+                $rules['data.relationships.author.data.id'] .= '|size:'.$user->id;
+            }
         }
 
         return $rules;
     }
-
-    // this function displays messages, like if user enters invalid data and displays message
-
 }

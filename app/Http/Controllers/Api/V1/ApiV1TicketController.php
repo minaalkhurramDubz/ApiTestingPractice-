@@ -73,27 +73,21 @@ class ApiV1TicketController extends ApiController
         // check if user exists
 
         try {
-            $user = User::findOrFail($request->input('data.relationships.author.data.id'));
+            // wether the user exists is being checked in storeticketrequests : rules() method
+            //      $user = User::findOrFail($request->input('data.relationships.author.data.id'));
 
             // policy
-            $this->isAble('store', null);
+            $this->isAble('store', Ticket::class);
+
+            return new TicketResource(Ticket::create($request->mappedAttributes()));
 
             // todo : create ticket
 
-        } catch (ModelNotFoundException $exception) {
-            return $this->ok('User not found', [
-                'error' => ' The provided user id does not exist ',
-            ]);
+        } catch (AuthorizationException $exception) {
+            return $this->error('You Are Not Authorized ', 401);
+
         }
 
-        $model = [
-            'title' => $request->input('data.attributes.title'),
-            'description' => $request->input('data.attributes.description'),
-            'status' => $request->input('data.attributes.status'),
-            'user_id' => $request->input('data.relationships.author.data.id'),
-        ];
-
-        return new TicketResource(Ticket::create($model));
     }
 
     /**

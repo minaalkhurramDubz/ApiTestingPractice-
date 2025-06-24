@@ -9,6 +9,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 class ApiController extends Controller
 {
     use ApiResponses;
+
     //
     use AuthorizesRequests;
 
@@ -32,6 +33,9 @@ class ApiController extends Controller
 
     }
 
+    // uses built in authorize functions to check permissions
+
+    // wraps authorize() and forces the use of a specific policy class
     public function isAble($ability, $targetModel)
     {
 
