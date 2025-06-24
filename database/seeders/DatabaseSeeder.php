@@ -14,12 +14,17 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
 
-
-        $users=\App\Models\User::factory(10)->create();
-        // 1 user is created and reused for the 100 tickets 
+        $users = \App\Models\User::factory(10)->create();
+        // 1 user is created and reused for the 100 tickets
         \App\Models\Ticket::factory(100)->recycle($users)->create();
         // User::factory(10)->create();
 
+        \App\Models\User::create([
+            'email' => 'manager@manager.com',
+            'password' => bcrypt('password'),
+            'name' => 'The Manager',
+            'is_manager' => true,
+        ]);
         /*
         User::factory()->create([
             'name' => 'Test User',
